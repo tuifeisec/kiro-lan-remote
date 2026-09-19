@@ -1,0 +1,32 @@
+{
+  "name": "kiro-lan-remote",
+  "version": "0.2.0",
+  "private": true,
+  "type": "module",
+  "description": "局域网内用浏览器遥控本机 Kiro IDE agent 会话（独立程序，无需安装插件）",
+  "main": "server.mjs",
+  "scripts": {
+    "start": "node server.mjs",
+    "build": "vite build",
+    "dev": "vite",
+    "typecheck": "vue-tsc --noEmit",
+    "test:contract": "npm run build && node test/check.mjs",
+    "test:legacy": "npm run test:contract",
+    "test:unit": "node --test test/unit/*.test.mjs"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "dependencies": {
+    "pinia": "^4.0.3",
+    "vue": "^3.5.43"
+  },
+  "devDependencies": {
+    "@types/node": "^26.6.1",
+    "@vitejs/plugin-vue": "^6.0.9",
+    "typescript": "^5.9.3",
+    "vite": "^8.3.0",
+    "vite-plugin-singlefile": "^2.3.3",
+    "vue-tsc": "^3.3.11"
+  }
+}

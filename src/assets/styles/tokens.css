@@ -1,0 +1,23 @@
+/* 设计令牌（颜色/字体/缓动）
+   迁移自 public/index.html 原样式第 21-41 行，规则值保持原样。 */
+  :root {
+    --bg: #161616;
+    --bg-header: #202020;
+    --bg-card: #2B2B2B;
+    --border: rgba(255,255,255,0.10);
+    --surface: rgba(255,255,255,0.05);
+    --surface-hover: rgba(255,255,255,0.10);
+    --btn-hover: rgba(255,255,255,0.08);
+    --menu-hover: #363636;
+    --fg: #DFDFDF;
+    --fg-subtle: rgba(223,223,223,0.60);
+    --fg-subtlest: rgba(223,223,223,0.30);
+    --success: #46BF72;
+    --success-fg: #000000;
+    --success-border: rgba(70,191,114,0.40);
+    --warning: #FF8A30;
+    --danger: #FF5C5C;
+    --font-ui: Inter, system-ui, -apple-system, "Segoe UI", "Microsoft YaHei", "PingFang SC", sans-serif;
+    --font-mono: ui-monospace, SFMono-Regular, "Cascadia Mono", Consolas, monospace;
+    --ease: cubic-bezier(.4,0,.2,1);
+  }

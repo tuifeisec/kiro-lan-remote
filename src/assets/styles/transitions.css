@@ -1,0 +1,40 @@
+/* 流式淡入与减弱动效降级
+   迁移自 public/index.html 原样式第 681-715 行，规则值保持原样。 */
+  /* ----------------------------------------------------------------
+     流式淡入：0.9s cubic-bezier(.16,1,.3,1) both 的纯 opacity 淡入。
+     参考站整段内容一次性淡入，避免逐 chunk 闪动。
+     ---------------------------------------------------------------- */
+  @keyframes stream-in { from { opacity: 0; } to { opacity: 1; } }
+  .stream-in {
+    animation: stream-in .9s cubic-bezier(.16,1,.3,1) both;
+    will-change: opacity;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .stream-in { animation: none; }
+  }
+
+  /* ===== 滚动到底部按钮 ===== */
+  .conv-jump {
+    position: absolute;
+    left: 50%;
+    bottom: calc(132px + env(safe-area-inset-bottom));
+    transform: translateX(-50%);
+    width: 28px; height: 28px;
+    border: 1px solid var(--border);
+    border-radius: 50%;
+    background: var(--bg-card);
+    color: var(--fg);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    z-index: 5;
+    transition: background .15s;
+  }
+  .conv-jump.show { display: inline-flex; }
+  .conv-jump:hover { background: #313131; }
+  /* 图标容器走 flex、svg 走 block：否则包裹 span 会按 line-height 形成
+     19px 行盒、svg 落在基线上，视觉中心比按钮中心偏上 1.5px。 */
+  .conv-jump span { display: flex; align-items: center; justify-content: center; line-height: 0; }
+  .conv-jump svg { pointer-events: none; display: block; }
+

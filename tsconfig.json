@@ -1,0 +1,35 @@
+{
+  "compilerOptions": {
+    "target": "ES2022",
+    "module": "ESNext",
+    "moduleResolution": "bundler",
+    "lib": ["ES2022", "DOM", "DOM.Iterable"],
+    "types": ["vite/client", "node"],
+
+    "strict": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "noFallthroughCasesInSwitch": true,
+    "noImplicitOverride": true,
+    "exactOptionalPropertyTypes": false,
+
+    "jsx": "preserve",
+    "isolatedModules": true,
+    "verbatimModuleSyntax": true,
+    // 相对导入显式带 .ts 扩展名：Node 的原生 TS 剥离（node --test 直接跑 .ts）
+    // 不做扩展名补全，不带扩展名会 ERR_MODULE_NOT_FOUND。
+    // Vite 不受影响；noEmit 下 TS 允许该写法。
+    "allowImportingTsExtensions": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "resolveJsonModule": true,
+    "useDefineForClassFields": true,
+
+    "noEmit": true,
+
+    "baseUrl": ".",
+    "paths": { "@/*": ["src/*"] }
+  },
+  "include": ["src/**/*.ts", "src/**/*.vue", "vite.config.ts", "test/unit/**/*.mjs"],
+  "exclude": ["node_modules", "public", "_legacy", "test/existing-probes"]
+}

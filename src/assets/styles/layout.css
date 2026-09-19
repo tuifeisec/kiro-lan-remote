@@ -1,0 +1,557 @@
+/* 应用外壳、头部、列表页、会话内页骨架
+   迁移自 public/index.html 原样式第 64-433 行，规则值保持原样。 */
+  /* ===== 应用外壳：全屏 Flex 列 ===== */
+  .app {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    height: 100dvh;
+    overflow: hidden;
+  }
+
+  /* ===== 桌面双栏外壳（≥960px，由 App.vue 的 matchMedia 控制） ===== */
+  /* 侧栏与主区同底色、以右边线分层（官方 --color-sidebar 与页面背景一致） */
+  .shell-split {
+    flex-direction: row;
+  }
+  .shell-side {
+    flex: none;
+    width: 264px;
+    border-right: 1px solid var(--border);
+    background: var(--bg);
+    min-height: 0;
+  }
+  .shell-side > .app {
+    height: 100%;
+  }
+  .shell-main {
+    flex: 1;
+    min-width: 0;
+    min-height: 0;
+  }
+
+  /* 侧栏紧凑导航行（compact 头部）：新建会话 + 会话数副标题 */
+  .side-head {
+    flex: none;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    min-height: 44px;
+    padding: 8px 12px;
+    padding-top: calc(8px + env(safe-area-inset-top));
+    background: var(--bg-header);
+    border-bottom: 1px solid var(--border);
+  }
+  .side-new-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    height: 28px;
+    padding: 0 10px;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    background: transparent;
+    color: var(--fg);
+    font: inherit;
+    font-size: 13px;
+    white-space: nowrap;
+    cursor: pointer;
+    transition: background .15s, border-color .15s;
+  }
+  .side-new-btn:hover { background: var(--btn-hover); border-color: rgba(255,255,255,0.18); }
+  .side-new-btn .i { display: inline-flex; width: 14px; height: 14px; }
+  .side-new-btn svg { pointer-events: none; display: block; }
+  .side-meta {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    min-width: 0;
+  }
+  .side-count {
+    font-size: 12px;
+    color: var(--fg-subtle);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  /* 侧栏紧凑化：工作区卡片去卡面改纯分组行，任务行降密度（行样式按差异清单 A3） */
+  .shell-side .ws-card {
+    background: transparent;
+    border-color: transparent;
+  }
+  .shell-side .ws-head { padding: 8px 6px; }
+  .shell-side .ws-icon { width: 24px; height: 24px; border-radius: 6px; }
+  .shell-side .ws-path { font-size: 12px; line-height: 18px; }
+  .shell-side .ws-updated { font-size: 12px; line-height: 18px; }
+  .shell-side .ws-count { font-size: 12px; }
+  .shell-side .ws-tasks { padding: 4px; }
+  .shell-side .task-row { min-height: 32px; padding: 4px 8px; }
+  .shell-side .task-time { margin-top: 0; font-size: 12px; line-height: 18px; }
+  .shell-side .sec-title { font-size: 13px; }
+  .shell-side .sec-count { font-size: 12px; }
+
+  /* ===== 头部 ===== */
+  header {
+    flex: none;
+    background: var(--bg-header);
+    border-bottom: 1px solid var(--border);
+    padding: 12px 16px;
+    padding-top: calc(12px + env(safe-area-inset-top));
+  }
+  .head-inner {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 12px;
+    min-width: 0;
+  }
+  .head-text { min-width: 0; }
+  /* A5：标题 15px/600、副标题 12px（官方列表头量级） */
+  .head-title {
+    font-size: 15px;
+    font-weight: 600;
+    line-height: 22px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .head-subtitle { margin-top: 2px; font-size: 12px; line-height: 18px; color: var(--fg-subtle); }
+  /* 8px：状态点与按钮之间刻意放宽，触屏命中 */
+  .head-actions { display: flex; flex: none; align-items: center; gap: 8px; }
+
+  .dot {
+    flex: none;
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    background: var(--fg-subtlest);
+    transition: background .15s var(--ease);
+  }
+  .dot.on { background: var(--success); box-shadow: 0 0 0 3px rgba(70,191,114,.15); }
+  .dot.err { background: var(--danger); box-shadow: 0 0 0 3px rgba(255,92,92,.15); }
+  .dot.wait { background: var(--warning); }
+
+  /* 连接状态：圆点保持装饰，状态同时以文本表达（不再只靠颜色区分）。
+     正常连接时文本对视觉隐藏（避免顶栏噪音），异常/未连接时才显示出来。 */
+  .connection-status {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    min-width: 0;
+  }
+  .connection-status-label {
+    position: absolute;
+    width: 1px; height: 1px;
+    margin: -1px; padding: 0;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+  .connection-status.attention .connection-status-label {
+    position: static;
+    width: auto; height: auto;
+    margin: 0;
+    overflow: visible;
+    clip-path: none;
+    font-size: 12px;
+    line-height: 18px;
+    color: var(--fg-subtle);
+    white-space: nowrap;
+  }
+  .connection-status.attention .dot { box-shadow: none; }
+  /* 空会话/空主区里已有单独的状态文案，这里不再重复显示文字
+     （特异度需高于 .connection-status.attention，否则异常态会出现两份文案） */
+  .conv-empty-conn .connection-status .connection-status-label {
+    position: absolute;
+    width: 1px; height: 1px;
+    margin: -1px; padding: 0;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+
+  .icon-btn {
+    display: inline-flex;
+    flex: none;
+    align-items: center;
+    justify-content: center;
+    width: 24px; height: 24px;
+    padding: 0;
+    border: 1px solid transparent;
+    border-radius: 6px;
+    background: transparent;
+    color: var(--fg);
+    cursor: pointer;
+    transition: background .15s, border-color .15s;
+  }
+  .icon-btn:hover { background: var(--btn-hover); }
+  .icon-btn:disabled { opacity: .5; cursor: default; }
+  .icon-btn:disabled:hover { background: transparent; }
+  .icon-btn svg { pointer-events: none; display: block; }
+
+  /* ===== 滚动内容区（列表页） ===== */
+  .content {
+    flex: 1;
+    min-height: 0;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    -webkit-overflow-scrolling: touch;
+    padding: 12px;
+    padding-bottom: calc(12px + env(safe-area-inset-bottom));
+  }
+
+  /* ===== 提示卡片 ===== */
+  .banner {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 12px;
+    font-size: 14px;
+    line-height: 1.625;
+    color: var(--fg-subtle);
+  }
+  .banner-err {
+    background: rgba(255,92,92,.1);
+    border-color: rgba(255,92,92,.3);
+    color: #FFC9C9;
+  }
+
+  /* ===== 区块标题行 ===== */
+  .section-row {
+    margin-top: 16px;
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 12px;
+    min-width: 0;
+  }
+  .sec-text { min-width: 0; }
+  .sec-title { font-size: 14px; font-weight: 500; line-height: 21px; }
+  .sec-count { margin-top: 4px; font-size: 14px; color: var(--fg-subtle); }
+  .sec-actions { display: flex; flex: none; align-items: center; gap: 4px; }
+
+  /* ===== 工作区卡片列表 ===== */
+  .ws-list {
+    margin-top: 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .ws-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    overflow: hidden;
+  }
+  .ws-head {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px;
+  }
+  .ws-toggle {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    text-align: left;
+    background: transparent;
+    border: none;
+    padding: 0;
+    color: inherit;
+    font: inherit;
+    cursor: pointer;
+  }
+  .ws-icon {
+    flex: none;
+    width: 32px; height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 8px;
+    background: var(--surface);
+    color: var(--fg-subtle);
+  }
+  .ws-body { flex: 1; min-width: 0; display: block; }
+  .ws-title-row { display: flex; align-items: center; gap: 8px; min-width: 0; }
+  .ws-name {
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 21px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .pill {
+    flex: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    background: var(--surface);
+    padding: 2px 6px;
+    font-size: 10px;
+    line-height: 10px;
+    color: var(--fg-subtle);
+    white-space: nowrap;
+  }
+  /* 运行中胶囊：官方为绿色 + 脉动点（成功语义，非警示橙） */
+  .pill-run { color: var(--success); border-color: rgba(70,191,114,.35); background: rgba(70,191,114,.12); }
+  .pill-fail { color: var(--danger); border-color: rgba(255,92,92,.35); background: rgba(255,92,92,.12); }
+  /* 实时运行徽章的脉动点（新增）：低噪声透明度呼吸，随 pill-run 的 warning 色 */
+  .live-dot {
+    flex: none;
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: currentColor;
+    animation: live-pulse 2s var(--ease) infinite;
+  }
+  @keyframes live-pulse { 0%, 100% { opacity: 1; } 50% { opacity: .35; } }
+  @media (prefers-reduced-motion: reduce) {
+    .live-dot { animation: none; }
+  }
+  .ws-path {
+    margin-top: 4px;
+    display: block;
+    font-family: var(--font-mono);
+    font-size: 14px;
+    line-height: 21px;
+    color: var(--fg-subtlest);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .ws-updated {
+    margin-top: 4px;
+    display: block;
+    font-size: 14px;
+    line-height: 21px;
+    color: var(--fg-subtle);
+  }
+  .ws-count {
+    flex: none;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 14px;
+    line-height: 21px;
+    color: var(--fg-subtle);
+    white-space: nowrap;
+  }
+  /* 图标容器走 flex、svg 走 block：否则外层裸 span 按 line-height 撑成
+     22px 行盒，svg 落在基线上，比「N 个会话」文字中心偏上 3px。 */
+  .ws-count > span { display: inline-flex; align-items: center; line-height: 0; }
+  .ws-count svg { flex: none; display: block; transition: transform .2s var(--ease); }
+  .ws-card:not(.expanded) .ws-count svg { transform: rotate(-90deg); }
+  .ws-card:not(.expanded) .ws-tasks { display: none; }
+
+  .add-btn {
+    display: inline-flex;
+    flex: none;
+    align-items: center;
+    justify-content: center;
+    height: 24px;
+    padding: 0 8px;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    background: transparent;
+    color: var(--fg);
+    cursor: pointer;
+    transition: background .15s, border-color .15s;
+  }
+  .add-btn:hover { border-color: rgba(255,255,255,0.18); background: var(--surface); }
+  .add-btn svg { pointer-events: none; display: block; }
+
+  /* ===== 任务行（卡片内） ===== */
+  .ws-tasks {
+    list-style: none;
+    border-top: 1px solid var(--border);
+    padding: 8px;
+  }
+  .task-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    width: 100%;
+    min-height: 48px;
+    padding: 8px 10px;
+    border: none;
+    border-radius: 8px;
+    background: transparent;
+    color: inherit;
+    font: inherit;
+    text-align: left;
+    cursor: pointer;
+    transition: background .15s;
+  }
+  .task-row:hover { background: var(--surface-hover); }
+  .task-marker {
+    flex: none;
+    width: 16px; height: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .task-body { flex: 1; min-width: 0; display: block; }
+  .task-title {
+    display: block;
+    font-size: 14px;
+    line-height: 21px;
+    color: var(--fg);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .task-time {
+    margin-top: 4px;
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 6px;
+    min-width: 0;
+    font-size: 14px;
+    line-height: 21px;
+    color: var(--fg-subtle);
+  }
+  .task-desc {
+    margin-top: 4px;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    font-size: 12px;
+    line-height: 1.45;
+    color: var(--fg-subtle);
+  }
+  .badge {
+    flex: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    border: 1px solid var(--success-border);
+    border-radius: 999px;
+    background: var(--success);
+    color: var(--success-fg);
+    padding: 2px 6px;
+    font-size: 10px;
+    line-height: 10px;
+  }
+  .badge svg { flex: none; display: block; }
+
+  .empty {
+    padding: 32px 12px;
+    text-align: center;
+    color: var(--fg-subtlest);
+    font-size: 14px;
+  }
+
+  /* ===== Toast ===== */
+  .toast {
+    position: fixed;
+    left: 50%;
+    bottom: calc(24px + env(safe-area-inset-bottom));
+    transform: translate(-50%, 16px);
+    background: #3A3A3A;
+    border: 1px solid var(--border);
+    color: var(--fg);
+    font-size: 13px;
+    padding: 10px 18px;
+    border-radius: 8px;
+    box-shadow: 0 6px 24px rgba(0,0,0,0.5);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity .2s, transform .2s;
+    z-index: 99;
+    max-width: min(88vw, 420px);
+    /* 长错误必须换行显示，否则关键信息被省略号吃掉 */
+    white-space: normal;
+    overflow-wrap: anywhere;
+    text-align: center;
+  }
+  .toast.show { opacity: 1; transform: translate(-50%, 0); }
+
+  /* ===== 会话内页 ===== */
+  .conv-topbar {
+    flex: none;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    min-height: 44px;
+    background: var(--bg-header);
+    border-bottom: 1px solid var(--border);
+    padding: 6px 8px;
+    padding-top: calc(6px + env(safe-area-inset-top));
+  }
+  .conv-title {
+    flex: 1;
+    min-width: 0;
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 21px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  /* A2：桌面顶栏的文件夹图标（装饰位，对应官方顶栏工作区图标） */
+  .conv-folder {
+    flex: none;
+    display: inline-flex;
+    width: 24px;
+    height: 24px;
+    align-items: center;
+    justify-content: center;
+    color: var(--fg-subtle);
+  }
+  .conv-folder svg { display: block; }
+  /* 桌面顶栏禁用溢出按钮：保位不伪装可用 */
+  .conv-topbar .icon-btn:disabled {
+    color: var(--fg-subtlest);
+    cursor: default;
+  }
+  .conv-topbar .icon-btn:disabled:hover { background: transparent; }
+
+  /* 桌面双栏空状态：主区常驻但无活动会话 */
+  .conv-empty {
+    flex: 1;
+    min-height: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    padding: 24px;
+  }
+  .conv-empty-text {
+    color: var(--fg-subtlest);
+    font-size: 14px;
+    line-height: 21px;
+    text-align: center;
+  }
+  .conv-empty-conn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    color: var(--fg-subtle);
+    font-size: 12px;
+  }
+  .conv-main {
+    flex: 1;
+    min-height: 0;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    background: var(--bg);
+  }
+  .conv-scroller {
+    flex: 1;
+    min-height: 0;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-gutter: stable;
+  }
+

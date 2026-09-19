@@ -1,0 +1,173 @@
+/* 底部弹层与权限面板
+   迁移自 public/index.html 原样式第 906-1013 行，规则值保持原样。 */
+  /* ===== 底部弹层 ===== */
+  .sheet {
+    position: fixed;
+    inset: 0;
+    z-index: 50;
+    display: none;
+    background: rgba(0,0,0,.65);
+    -webkit-backdrop-filter: blur(2px);
+    backdrop-filter: blur(2px);
+  }
+  .sheet.show { display: flex; align-items: flex-end; }
+  .sheet-panel {
+    width: 100%;
+    max-height: 82vh;
+    overflow-y: auto;
+    background: var(--bg-card);
+    border-top: 1px solid var(--border);
+    border-radius: 16px 16px 0 0;
+    padding: 18px 16px calc(16px + env(safe-area-inset-bottom));
+    box-shadow: 0 -12px 40px rgba(0,0,0,.5);
+    animation: rise .22s var(--ease);
+  }
+  @keyframes rise { from { transform: translateY(16px); opacity: 0; } to { transform: none; opacity: 1; } }
+  .sheet-title { font-size: 15px; font-weight: 600; margin: 0 0 4px; }
+  .sheet-desc { font-size: 12px; color: var(--fg-subtle); line-height: 1.5; }
+  .sheet-box {
+    background: var(--bg-header);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 12px 16px;
+    margin: 12px 0;
+    font-size: 13px;
+    word-break: break-word;
+  }
+  .sheet-box .k { color: var(--fg-subtle); font-size: 12px; margin-top: 6px; }
+  /* 权限请求归属会话的标题行（新增）：工具标题上方的小字提示，缺失时不渲染 */
+  .sheet-session {
+    color: var(--fg-subtle);
+    font-size: 12px;
+    line-height: 18px;
+    margin-bottom: 4px;
+    word-break: break-word;
+  }
+  .sheet-box pre {
+    margin: 8px 0 0;
+    white-space: pre-wrap;
+    word-break: break-word;
+    font-family: var(--font-mono);
+    font-size: 12px;
+    line-height: 1.5;
+    max-height: 30vh;
+    overflow: auto;
+    color: var(--fg-subtle);
+  }
+  .opts { display: flex; flex-direction: column; gap: 8px; margin-top: 12px; }
+  .opt {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    text-align: left;
+    padding: 12px 14px;
+    font: inherit;
+    font-size: 14px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    color: var(--fg);
+    cursor: pointer;
+    transition: background .15s, border-color .15s;
+  }
+  .opt:hover { background: var(--surface-hover); border-color: rgba(255,255,255,0.18); }
+  /* 放行分两级：一次性放行实心绿（主操作），始终放行绿描边（次操作）；
+     拒绝统一红描边。误点「始终允许」等于长期授权，视觉必须可区分。 */
+  .opt-allow { background: var(--success); border-color: var(--success); color: var(--success-fg); font-weight: 500; }
+  .opt-allow:hover { background: #3FAE66; border-color: #3FAE66; }
+  .opt-allow-soft { border-color: rgba(70,191,114,.45); color: var(--success); }
+  .opt-allow-soft:hover { background: rgba(70,191,114,.12); border-color: rgba(70,191,114,.6); }
+  .opt-deny { border-color: rgba(255,92,92,.4); color: var(--danger); }
+  .opt-deny:hover { background: rgba(255,92,92,.12); border-color: rgba(255,92,92,.55); }
+  .opt-cur { border-color: rgba(70,191,114,.5); color: var(--success); }
+  .opt-ghost { background: transparent; border-color: transparent; color: var(--fg-subtle); font-size: 13px; justify-content: center; }
+  /* 权限提交中的状态行 */
+  .opt-status {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    font-size: 12px;
+    line-height: 18px;
+    color: var(--fg-subtle);
+  }
+
+  /* 输入框保持 16px 字号：更小会触发 iOS 聚焦自动放大 */
+  .field {
+    width: 100%;
+    font: inherit;
+    font-size: 16px;
+    color: var(--fg);
+    background: var(--bg-header);
+    border: 1px solid rgba(255,255,255,.22);
+    border-radius: 12px;
+    padding: 10px 12px;
+    margin-top: 12px;
+  }
+  .field:focus { outline: none; border-color: rgba(255,255,255,.35); }
+
+  .spin {
+    display: inline-block;
+    width: 12px; height: 12px;
+    vertical-align: -1px;
+    border: 1.5px solid var(--border);
+    border-top-color: var(--fg-subtle);
+    border-radius: 50%;
+    animation: sp .7s linear infinite;
+  }
+  @keyframes sp { to { transform: rotate(360deg); } }
+
+  @media (max-width: 640px) {
+    #msgs { padding-left: 16px; padding-right: 16px; }
+  }
+  @media (max-width: 480px) {
+    header { padding-left: 12px; padding-right: 12px; }
+    .content { padding: 10px 12px; }
+    .ws-head { padding: 10px 12px; }
+  }
+
+  /* ===== 减少动效：统一收敛弹层、菜单与折叠动画。
+     只关闭动画本身，不改变任何尺寸/可见性语义。 ===== */
+  @media (prefers-reduced-motion: reduce) {
+    .sheet-panel,
+    .pop.show,
+    .slash-menu {
+      animation: none;
+    }
+    .wr-panel,
+    .wr-det,
+    .work-btn svg,
+    .wr-chev,
+    .pop,
+    .toast,
+    .dot,
+    .conv-jump,
+    .icon-btn,
+    .opt,
+    .btn,
+    .tool-btn,
+    .msg-icon-btn,
+    .task-row,
+    .ws-count svg,
+    .add-btn,
+    .side-new-btn,
+    .composer-box,
+    .field {
+      transition: none;
+    }
+  }
+
+/* ===== 触屏命中区：统一下沉到本文件末尾。
+   这些选择器的基础规则分散在 layout/conversation/composer.css，
+   而本文件最后加载；媒体查询只加层叠优先级、不加特异度，
+   写在基础规则之前会被同特异度的后者覆盖，因此必须集中在此处。 ===== */
+@media (pointer: coarse) {
+  .icon-btn,
+  .msg-icon-btn { width: 40px; height: 40px; }
+  .add-btn { height: 36px; padding: 0 12px; }
+  .side-new-btn { height: 36px; }
+  .conv-jump { width: 40px; height: 40px; }
+  .send-btn { width: 36px; height: 36px; }
+  .tool-btn { height: 34px; }
+}

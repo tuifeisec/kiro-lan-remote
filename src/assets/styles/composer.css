@@ -1,0 +1,309 @@
+/* composer 输入区与下拉面板
+   迁移自 public/index.html 原样式第 716-905 行，规则值保持原样。 */
+  /* ===== 输入区（composer） ===== */
+  .conv-composer {
+    flex: none;
+    position: relative;
+    z-index: 10;
+    padding: 12px 12px calc(12px + env(safe-area-inset-bottom));
+    background: var(--bg);
+  }
+  .composer-inner { max-width: 760px; margin: 0 auto; }
+  /* B6：桌面双栏下 composer 与消息列同为近满宽（同一视觉体系） */
+  .shell-split .composer-inner { max-width: none; }
+  .composer-box {
+    container-type: inline-size;
+    container-name: composer;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 12px;
+    transition: border-color .15s;
+  }
+  .composer-box:hover, .composer-box:focus-within { border-color: rgba(255,255,255,0.18); }
+  .composer-box textarea {
+    width: 100%;
+    min-width: 0;
+    font: inherit;
+    /* 16px：小于该值 iOS 聚焦会触发整页自动放大 */
+    font-size: 16px;
+    line-height: 22px;
+    color: var(--fg);
+    background: transparent;
+    border: 0;
+    padding: 0;
+    outline: none;
+    resize: none;
+    min-height: 40px;
+    max-height: 160px;
+  }
+  .composer-box textarea::placeholder { color: var(--fg-subtlest); }
+  .composer-toolbar { display: flex; align-items: flex-end; gap: 12px; }
+  .composer-left { flex: 1 1 auto; min-width: 0; display: flex; align-items: center; gap: 4px; position: relative; }
+  /* 允许右侧组收缩：模型名过长时它必须能让位，否则标签的 ellipsis 永不触发，
+     整条工具栏会横向溢出并把发送按钮挤出可视区（实测 31 字符名字溢出 23px）。 */
+  .composer-right { flex: 0 1 auto; min-width: 0; display: flex; align-items: center; gap: 6px; }
+  .composer-grp { display: flex; min-width: 0; align-items: center; gap: 4px; position: relative; }
+
+  .tool-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    height: 28px;
+    padding: 0 8px;
+    max-width: 100%;
+    border: none;
+    border-radius: 8px;
+    background: transparent;
+    color: var(--fg);
+    font: inherit;
+    font-size: 14px;
+    white-space: nowrap;
+    cursor: pointer;
+    transition: background .15s;
+  }
+  .tool-btn:hover { background: var(--btn-hover); }
+  .tool-btn:active { background: var(--surface-hover); }
+  .tool-btn svg { pointer-events: none; flex: none; display: block; }
+  /* 图标容器：`class="i"` 有的打在外层 span（PERM_ICON/MODE_ICON），
+     有的打在 svg 上（MODEL_ICON/EFFORT_ICON），两种都要覆盖。
+     图标外的裸 span 必须是无行高的裸容器 —— 否则它会按 line-height
+     撑成 16×22 的行盒，把 16px 图标压到偏上 3px。
+     必须排除 .lbl：它是文字标签，line-height:0 会把文字压塌。 */
+  .tool-btn > span:not(.lbl) { display: inline-flex; align-items: center; justify-content: center; line-height: 0; }
+  .tool-btn .i { display: inline-flex; align-items: center; justify-content: center; width: 16px; height: 16px; line-height: 0; }
+  .tool-btn .i svg { width: 16px; height: 16px; }
+  .tool-btn .chev14 { width: 14px; height: 14px; color: var(--fg-subtle); }
+  .tool-btn .lbl { overflow: hidden; text-overflow: ellipsis; }
+  /* 完全访问 = 橙色警示；更保守的档位用普通前景色 */
+  .tool-btn.mode { color: var(--warning); }
+  .tool-btn.mode .chev14 { color: var(--warning); }
+  .tool-btn.mode.calm { color: var(--fg); }
+  .tool-btn.mode.calm .chev14 { color: var(--fg-subtle); }
+
+  /* C7：模型 pill 名前绿色状态点（官方同款，成功语义） */
+  .model-dot {
+    flex: none;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--success);
+  }
+
+  /* C1：发送按钮改深色圆角方块 + 白色箭头（官方量级；bg-card 亮一档 #363636），
+     取消态用 --danger 语义，hover 克制 */
+  .send-btn {
+    flex: none;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px; height: 28px;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    background: #363636;
+    color: #fff;
+    cursor: pointer;
+    transition: background .15s, border-color .15s;
+  }
+  .send-btn:hover { background: #404040; }
+  .send-btn:active { background: #474747; }
+  .send-btn:disabled { opacity: .5; pointer-events: none; }
+  .send-btn.busy {
+    background: rgba(255,92,92,.12);
+    border-color: rgba(255,92,92,.35);
+    color: var(--danger);
+  }
+  .send-btn.busy:hover { background: rgba(255,92,92,.2); }
+  .send-btn.busy:active { background: rgba(255,92,92,.28); }
+  .send-btn svg { width: 16px; height: 16px; display: block; pointer-events: none; }
+  .send-btn .spin { border-color: rgba(255,255,255,.25); border-top-color: #fff; }
+  .send-btn.busy .spin { border-color: rgba(255,92,92,.25); border-top-color: var(--danger); }
+
+  /* 窄容器：工具栏按容器宽度分两档收缩（对齐官方 @container/composer 断点）。
+     注意容器查询量的是 .composer-box 的 content-box（已扣左右 12px 内边距 + 1px 边框），
+     所以 375px 视口下容器宽约 325px，落在最窄档。
+        < 576px  权限/思考/模式三个按钮收成图标方块，模型按钮保留名字
+        < 384px  模型按钮也收成图标方块（四个按钮等宽，同官方 size-7）
+     文字与箭头必须同时收起：只藏 .lbl 会留下一个没有对应文字的孤立箭头。
+     方块用 aspect-ratio 由高度反推宽度，而不是硬写 width/padding ——
+     触屏下 sheets.css 的 .tool-btn{height:34px} 会把方块同步放大到 34×34，
+     硬写 width 则会产生 28×34 的扁矩形。 */
+  @container composer (width < 36rem) {
+    /* 必须限定为按钮的直接子元素：下拉面板同样在 .composer-toolbar 内，
+       若写成 `.composer-toolbar .lbl`，面板项的 .lbl 会被一并隐藏，
+       窄屏下打开面板只能看到一排空行。 */
+    .composer-toolbar .tool-btn.mode > .lbl,
+    .composer-toolbar .tool-btn.mode > .chev-wrap,
+    .composer-toolbar .tool-btn.thought > .lbl,
+    .composer-toolbar .tool-btn.thought > .chev-wrap,
+    .composer-toolbar .tool-btn.agent-mode > .lbl,
+    .composer-toolbar .tool-btn.agent-mode > .chev-wrap { display: none; }
+    .composer-toolbar .tool-btn.mode,
+    .composer-toolbar .tool-btn.thought,
+    .composer-toolbar .tool-btn.agent-mode { aspect-ratio: 1; padding: 0; }
+  }
+  @container composer (width < 24rem) {
+    /* 绿点是装饰性状态提示（aria-hidden），语义由面板承担；
+       名字收起后若保留，它会独自把按钮撑成非方形的宽矩形。 */
+    .composer-toolbar .tool-btn.model > .lbl,
+    .composer-toolbar .tool-btn.model > .chev-wrap,
+    .composer-toolbar .tool-btn.model > .model-dot { display: none; }
+    .composer-toolbar .tool-btn.model { aspect-ratio: 1; padding: 0; }
+  }
+  /* 容器查询回退：不支持时退回视口断点。
+     容器宽 = 视口 − 50px（页面左右各 12px + composer 内边距左右各 12px + 边框左右各 1px），
+     故容器 384/576px 对应视口 434/626px；max-width 取临界前一像素，与容器查询同档。 */
+  @supports not (container-type: inline-size) {
+    @media (max-width: 625px) {
+      .composer-toolbar .tool-btn.mode > .lbl,
+      .composer-toolbar .tool-btn.mode > .chev-wrap,
+      .composer-toolbar .tool-btn.thought > .lbl,
+      .composer-toolbar .tool-btn.thought > .chev-wrap,
+      .composer-toolbar .tool-btn.agent-mode > .lbl,
+      .composer-toolbar .tool-btn.agent-mode > .chev-wrap { display: none; }
+      .composer-toolbar .tool-btn.mode,
+      .composer-toolbar .tool-btn.thought,
+      .composer-toolbar .tool-btn.agent-mode { aspect-ratio: 1; padding: 0; }
+    }
+    @media (max-width: 433px) {
+      .composer-toolbar .tool-btn.model > .lbl,
+      .composer-toolbar .tool-btn.model > .chev-wrap,
+      .composer-toolbar .tool-btn.model > .model-dot { display: none; }
+      .composer-toolbar .tool-btn.model { aspect-ratio: 1; padding: 0; }
+    }
+  }
+
+  /* ===== 下拉面板（沿用原参考站 select/dropdown 实测值） ===== */
+  .pop {
+    position: absolute;
+    bottom: calc(100% + 4px);
+    z-index: 60;
+    display: none;
+    flex-direction: column;
+    gap: 2px;
+    overflow-x: hidden;
+    overflow-y: auto;
+    max-height: calc(100vh - 220px);
+    max-height: calc(100dvh - 220px);
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 4px;
+    color: var(--fg);
+    box-shadow: 0 4px 6px -1px rgba(0,0,0,.1), 0 2px 4px -2px rgba(0,0,0,.1);
+  }
+  .pop.show { display: flex; animation: popIn .1s var(--ease) both; }
+  @keyframes popIn { from { opacity: 0; transform: scale(.95); } to { opacity: 1; transform: none; } }
+  .pop-mode { width: 256px; left: 0; transform-origin: bottom left; }
+  .pop-model { min-width: 192px; width: max-content; max-width: calc(100vw - 5rem); left: auto; right: 0; transform-origin: bottom right; }
+  .pop-thought { min-width: 128px; left: auto; right: 0; transform-origin: bottom right; }
+
+  .pop-item {
+    position: relative;
+    width: 100%;
+    display: flex;
+    background: transparent;
+    border: 0;
+    border-radius: 6px;
+    font: inherit;
+    font-size: 14px;
+    color: var(--fg);
+    text-align: left;
+    transition: background .15s var(--ease);
+  }
+  .pop-item:hover, .pop-item:focus-visible { background: var(--menu-hover); }
+  .pop-item-thought { min-height: 28px; align-items: center; gap: 8px; padding: 4px 8px; line-height: 1.625; }
+  .pop-item-model { min-height: 32px; align-items: center; gap: 8px; padding: 4px 8px; line-height: 1.625; }
+  /* 模式项更高：容下「标题 + 说明」两行 */
+  .pop-item-mode { min-height: 52px; align-items: flex-start; gap: 12px; padding: 8px 32px 8px 8px; }
+  .pop-item .lbl { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .pop-item .col { display: flex; min-width: 0; flex-direction: column; gap: 2px; }
+  .pop-item .col .desc { font-size: 12px; color: var(--fg-subtle); white-space: normal; }
+  .pop-item .tick {
+    position: absolute;
+    right: 8px;
+    top: 50%;
+    transform: translateY(-50%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--fg-subtle);
+  }
+  .pop-item-mode .tick { top: 8px; transform: none; }
+  .pop-item .tick svg { width: 16px; height: 16px; display: block; }
+
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    height: 30px;
+    padding: 0 14px;
+    font: inherit;
+    font-size: 13px;
+    background: transparent;
+    border: 1px solid var(--border);
+    border-radius: 7px;
+    color: var(--fg);
+    cursor: pointer;
+    transition: background .15s, border-color .15s, opacity .15s;
+  }
+  .btn:hover { background: var(--btn-hover); }
+  .btn:disabled { opacity: .4; cursor: default; }
+  .mt12 { margin-top: 12px; }
+
+  /* ===== 斜杠命令菜单（新增）：输入 '/' 且有可用命令时在输入框上方弹出 ===== */
+  .slash-anchor { position: relative; }
+  .slash-menu {
+    position: absolute;
+    bottom: calc(100% + 4px);
+    left: 0;
+    z-index: 60;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    min-width: 200px;
+    max-width: 100%;
+    max-height: 240px;
+    overflow-x: hidden;
+    overflow-y: auto;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 4px;
+    color: var(--fg);
+    box-shadow: 0 4px 6px -1px rgba(0,0,0,.1), 0 2px 4px -2px rgba(0,0,0,.1);
+    animation: popIn .1s var(--ease) both;
+  }
+  .slash-item {
+    display: flex;
+    align-items: baseline;
+    gap: 8px;
+    width: 100%;
+    min-height: 28px;
+    padding: 4px 8px;
+    background: transparent;
+    border: 0;
+    border-radius: 6px;
+    font: inherit;
+    font-size: 14px;
+    color: var(--fg);
+    text-align: left;
+    transition: background .15s var(--ease);
+  }
+  .slash-item:hover, .slash-item.active { background: var(--menu-hover); }
+  .slash-item .slash-name { flex: none; }
+  .slash-item .slash-desc {
+    min-width: 0;
+    overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+    font-size: 12px;
+    color: var(--fg-subtle);
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .slash-menu { animation: none; }
+  }
+

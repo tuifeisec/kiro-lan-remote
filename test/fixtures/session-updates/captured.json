@@ -1,0 +1,659 @@
+{
+  "capturedAt": "2026-09-18T19:34:07.639Z",
+  "kinds": {
+    "tool_call": {
+      "count": 1,
+      "firstFrame": {
+        "sessionId": "sess_e088a2eb-877d-41db-a5fa-e1f3dd87e3dd",
+        "update": {
+          "sessionUpdate": "tool_call",
+          "toolCallId": "1cd2b585-fa5b-4cc0-a79a-306e5851337e",
+          "title": "Fetching your cloud config",
+          "kind": "other",
+          "status": "in_progress",
+          "_meta": {
+            "kiro": {
+              "toolId": "fetch_cloud_config"
+            }
+          }
+        }
+      }
+    },
+    "config_option_update": {
+      "count": 2,
+      "firstFrame": {
+        "sessionId": "sess_e088a2eb-877d-41db-a5fa-e1f3dd87e3dd",
+        "update": {
+          "sessionUpdate": "config_option_update",
+          "configOptions": [
+            {
+              "type": "select",
+              "id": "mode",
+              "name": "Mode",
+              "category": "mode",
+              "currentValue": "vibe",
+              "options": [
+                {
+                  "value": "vibe",
+                  "name": "Default",
+                  "description": "General coding assistance",
+                  "_meta": {
+                    "kiro": {
+                      "source": "bundled",
+                      "resource": {
+                        "resourceType": "agent",
+                        "source": {
+                          "origin": "bundled"
+                        }
+                      }
+                    }
+                  }
+                },
+                {
+                  "value": "spec",
+                  "name": "Spec",
+                  "description": "Structured feature development",
+                  "_meta": {
+                    "kiro": {
+                      "source": "bundled",
+                      "resource": {
+                        "resourceType": "agent",
+                        "source": {
+                          "origin": "bundled"
+                        }
+                      }
+                    }
+                  }
+                },
+                {
+                  "value": "quick-spec",
+                  "name": "Quick Spec",
+                  "description": "Fast spec workflow: clarify, then auto-generate requirements, design, and tasks",
+                  "_meta": {
+                    "kiro": {
+                      "source": "bundled",
+                      "resource": {
+                        "resourceType": "agent",
+                        "source": {
+                          "origin": "bundled"
+                        }
+                      }
+                    }
+                  }
+                },
+                {
+                  "value": "bug-fix",
+                  "name": "Bug Fix",
+                  "description": "Structured bug-fix workflow: investigate, diagnose, and resolve bugs",
+                  "_meta": {
+                    "kiro": {
+                      "source": "bundled",
+                      "resource": {
+                        "resourceType": "agent",
+                        "source": {
+                          "origin": "bundled"
+                        }
+                      }
+                    }
+                  }
+                },
+                {
+                  "value": "plan",
+                  "name": "Plan",
+                  "description": "Plan-only mode that helps break ideas down into an implementation plan without making any changes",
+                  "_meta": {
+                    "kiro": {
+                      "welcomeMessage": "Transform any idea into fully working code. What do you want to build today?",
+                      "source": "bundled",
+                      "resource": {
+                        "resourceType": "agent",
+                        "source": {
+                          "origin": "bundled"
+                        }
+                      }
+                    }
+                  }
+                },
+                {
+                  "value": "autonomous",
+                  "name": "Autonomous",
+                  "description": "Autonomous agent execution",
+                  "_meta": {
+                    "kiro": {
+                      "source": "bundled",
+                      "resource": {
+                        "resourceType": "agent",
+                        "source": {
+                          "origin": "bundled"
+                        }
+                      }
+                    }
+                  }
+                },
+                {
+                  "value": "semantic_reviewer",
+                  "name": "semantic_reviewer",
+                  "description": "Reviews code changes at the behavioral level, not the syntactic level. Reconstructs the change as a narrative organized by concern, not by file. Produces a design-level review that every reviewer can navigate at their preferred depth. Works with local diffs (pre-PR) or PR diffs (post-PR).",
+                  "_meta": {
+                    "kiro": {
+                      "source": "bundled",
+                      "resource": {
+                        "resourceType": "agent",
+                        "source": {
+                          "origin": "bundled"
+                        }
+                      }
+                    }
+                  }
+                }
+              ]
+            },
+            {
+              "type": "select",
+              "id": "model",
+              "name": "Model",
+              "category": "model",
+              "currentValue": "26a7303e-cc49-478c-af27-e58334151345",
+              "options": [
+                {
+                  "value": "26a7303e-cc49-478c-af27-e58334151345",
+                  "name": "Claude-oPUS",
+                  "description": "Claude-oPUS",
+                  "_meta": {
+                    "kiro": {
+                      "rateMultiplier": 1,
+                      "rateUnit": "Credit",
+                      "hasEffort": true,
+                      "effortSchemaPath": "reasoning",
+                      "effortLevels": [
+                        "none",
+                        "low",
+                        "medium",
+                        "high",
+                        "xhigh",
+                        "max"
+                      ],
+                      "defaultEffortLevel": "xhigh"
+                    }
+                  }
+                },
+                {
+                  "value": "96690980-30bd-4d78-80ab-d8496e703f8c",
+                  "name": "guomo-plus",
+                  "description": "guomo-plus",
+                  "_meta": {
+                    "kiro": {
+                      "rateMultiplier": 1,
+                      "rateUnit": "Credit",
+                      "hasEffort": false
+                    }
+                  }
+                },
+                {
+                  "value": "0a7467d2-c07a-4dd8-a479-83ba25e66311",
+                  "name": "gpt-6-astra1",
+                  "description": "claude-opus-4-6666",
+                  "_meta": {
+                    "kiro": {
+                      "rateMultiplier": 1,
+                      "rateUnit": "Credit",
+                      "hasEffort": true,
+                      "effortSchemaPath": "reasoning",
+                      "effortLevels": [
+                        "none",
+                        "low",
+                        "medium",
+                        "high",
+                        "xhigh",
+                        "max"
+                      ],
+                      "defaultEffortLevel": "xhigh"
+                    }
+                  }
+                },
+                {
+                  "value": "d1e11deb-a651-42f3-bae4-85d25fb669c4",
+                  "name": "Autohuoshan",
+                  "_meta": {
+                    "kiro": {
+                      "rateMultiplier": 1,
+                      "rateUnit": "Credit",
+                      "hasEffort": false
+                    }
+                  }
+                },
+                {
+                  "value": "39666c04-31eb-45bc-8acd-3a9be0924277",
+                  "name": "gpt-5.6-sol",
+                  "_meta": {
+                    "kiro": {
+                      "rateMultiplier": 1,
+                      "rateUnit": "Credit",
+                      "hasEffort": true,
+                      "effortSchemaPath": "reasoning",
+                      "effortLevels": [
+                        "none",
+                        "low",
+                        "medium",
+                        "high",
+                        "xhigh",
+                        "max"
+                      ],
+                      "defaultEffortLevel": "high"
+                    }
+                  }
+                },
+                {
+                  "value": "41cb5393-cf2a-489f-98b4-1514375b5d28",
+                  "name": "GLM-5.2",
+                  "_meta": {
+                    "kiro": {
+                      "rateMultiplier": 1,
+                      "rateUnit": "Credit",
+                      "hasEffort": true,
+                      "effortSchemaPath": "reasoning",
+                      "effortLevels": [
+                        "none",
+                        "low",
+                        "medium",
+                        "high",
+                        "xhigh",
+                        "max"
+                      ],
+                      "defaultEffortLevel": "high"
+                    }
+                  }
+                },
+                {
+                  "value": "25d74cc6-88d2-4664-b381-e63f08eea1fb",
+                  "name": "deepseek-v4-flash",
+                  "_meta": {
+                    "kiro": {
+                      "rateMultiplier": 1,
+                      "rateUnit": "Credit",
+                      "hasEffort": true,
+                      "effortSchemaPath": "reasoning",
+                      "effortLevels": [
+                        "none",
+                        "low",
+                        "medium",
+                        "high",
+                        "xhigh",
+                        "max"
+                      ],
+                      "defaultEffortLevel": "high"
+                    }
+                  }
+                },
+                {
+                  "value": "9b5ccc46-c715-4256-8190-87bc95ca1d90",
+                  "name": "claude-opus-4-81",
+                  "_meta": {
+                    "kiro": {
+                      "rateMultiplier": 1,
+                      "rateUnit": "Credit",
+                      "hasEffort": true,
+                      "effortSchemaPath": "reasoning",
+                      "effortLevels": [
+                        "none",
+                        "low",
+                        "medium",
+                        "high",
+                        "xhigh",
+                        "max"
+                      ],
+                      "defaultEffortLevel": "high"
+                    }
+                  }
+                },
+                {
+                  "value": "74c07a0f-7574-438e-a421-a831f87fd3a7",
+                  "name": "deepseek-v1-flash",
+                  "_meta": {
+                    "kiro": {
+                      "rateMultiplier": 1,
+                      "rateUnit": "Credit",
+                      "hasEffort": true,
+                      "effortSchemaPath": "reasoning",
+                      "effortLevels": [
+                        "none",
+                        "low",
+                        "medium",
+                        "high",
+                        "xhigh",
+                        "max"
+                      ],
+                      "defaultEffortLevel": "high"
+                    }
+                  }
+                },
+                {
+                  "value": "9642e292-556f-410f-bd71-45d774bd21fe",
+                  "name": "deepseek-v4.1-flash",
+                  "_meta": {
+                    "kiro": {
+                      "rateMultiplier": 1,
+                      "rateUnit": "Credit",
+                      "hasEffort": true,
+                      "effortSchemaPath": "reasoning",
+                      "effortLevels": [
+                        "none",
+                        "low",
+                        "medium",
+                        "high",
+                        "xhigh",
+                        "max"
+                      ],
+                      "defaultEffortLevel": "high"
+                    }
+                  }
+                },
+                {
+                  "value": "GPT-8.8",
+                  "name": "GPT-8.8",
+                  "description": "这是GPT未开放的内部模型，免费给使用我们软件的人使用",
+                  "_meta": {
+                    "kiro": {
+                      "rateMultiplier": 0,
+                      "rateUnit": "Credit",
+                      "hasEffort": false
+                    }
+                  }
+                }
+              ]
+            },
+            {
+              "type": "select",
+              "id": "autopilot",
+              "name": "Autopilot",
+              "currentValue": "on",
+              "options": [
+                {
+                  "value": "on",
+                  "name": "Autopilot",
+                  "description": "Agent executes tools without confirmation"
+                },
+                {
+                  "value": "off",
+                  "name": "Supervised",
+                  "description": "Agent asks for approval before file changes"
+                }
+              ]
+            },
+            {
+              "type": "select",
+              "id": "contentCollection",
+              "name": "Content Collection",
+              "currentValue": "disabled",
+              "options": [
+                {
+                  "value": "enabled",
+                  "name": "Enabled",
+                  "description": "Allow content to be used for service improvement"
+                },
+                {
+                  "value": "disabled",
+                  "name": "Disabled",
+                  "description": "Opt out of content collection"
+                }
+              ]
+            }
+          ]
+        }
+      }
+    },
+    "available_commands_update": {
+      "count": 1,
+      "firstFrame": {
+        "sessionId": "sess_e088a2eb-877d-41db-a5fa-e1f3dd87e3dd",
+        "update": {
+          "sessionUpdate": "available_commands_update",
+          "availableCommands": [
+            {
+              "name": "architecture-selection",
+              "description": "Steering: architecture-selection",
+              "input": {
+                "hint": "optional context"
+              },
+              "_meta": {
+                "kiro": {
+                  "type": "steering",
+                  "contextQuery": "global:architecture-selection",
+                  "commandId": "architecture-selection",
+                  "resource": {
+                    "resourceType": "steering",
+                    "source": {
+                      "origin": "bundled"
+                    }
+                  },
+                  "originalName": "architecture-selection"
+                }
+              }
+            },
+            {
+              "name": "quick-spec",
+              "description": "Steering: quick-spec",
+              "input": {
+                "hint": "optional context"
+              },
+              "_meta": {
+                "kiro": {
+                  "type": "steering",
+                  "contextQuery": "global:quick-spec",
+                  "commandId": "quick-spec",
+                  "resource": {
+                    "resourceType": "steering",
+                    "source": {
+                      "origin": "bundled"
+                    }
+                  },
+                  "originalName": "quick-spec"
+                }
+              }
+            },
+            {
+              "name": "bug-fix",
+              "description": "Steering: bug-fix",
+              "input": {
+                "hint": "optional context"
+              },
+              "_meta": {
+                "kiro": {
+                  "type": "steering",
+                  "contextQuery": "global:bug-fix",
+                  "commandId": "bug-fix",
+                  "resource": {
+                    "resourceType": "steering",
+                    "source": {
+                      "origin": "bundled"
+                    }
+                  },
+                  "originalName": "bug-fix"
+                }
+              }
+            },
+            {
+              "name": "general-task-execution",
+              "description": "General-purpose sub-agent with access to all tools for executing arbitrary tasks",
+              "input": {
+                "hint": "task to delegate"
+              },
+              "_meta": {
+                "kiro": {
+                  "type": "custom-agent",
+                  "commandId": "general-task-execution",
+                  "resource": {
+                    "resourceType": "agent",
+                    "source": {
+                      "origin": "bundled"
+                    }
+                  },
+                  "originalName": "general-task-execution"
+                }
+              }
+            },
+            {
+              "name": "context-gatherer",
+              "description": "Investigates the codebase to answer a specific question about it. Deeply analyzes existing code by tracing execution paths, mapping architecture and abstraction layers, understanding patterns, and documenting dependencies, returning a thorough, direct written analysis that explains how the relevant code works and points to the specific files and lines involved. Use it to understand code before you change it: before designing or implementing a change to code you don't already fully understand, start with context-gatherer so your edits are grounded in how the code actually works. When a task requires understanding code you don't already know, dispatch context-gatherer to do that exploration before running your own searches or reads. Rules: 1. Provide a clear, specific prompt that includes your intent: a detailed task description of the context you need and what you're trying to accomplish. 2. The subagent explores the codebase and returns an analysis of your query 3. Trust the returned results. You may still inspect additional code yourself when you need context beyond what was returned. 4. Reuse existing context-gatherer output for related follow-up questions; do not re-invoke on the same question with different phrasing. 5. For multiple distinct questions, dispatch several context-gatherers in parallel, each targeting a different aspect of the codebase.",
+              "input": {
+                "hint": "task to delegate"
+              },
+              "_meta": {
+                "kiro": {
+                  "type": "custom-agent",
+                  "commandId": "context-gatherer",
+                  "resource": {
+                    "resourceType": "agent",
+                    "source": {
+                      "origin": "bundled"
+                    }
+                  },
+                  "originalName": "context-gatherer"
+                }
+              }
+            },
+            {
+              "name": "pua",
+              "description": "让你的 AI 不敢摆烂。用大厂 PUA 话术穷尽一切方案。触发条件：(1) 任务失败 2+ 次或反复微调同一思路; (2) 即将说'我无法解决'、建议用户手动操作、未验证就归因环境; (3) 被动等待——不搜索、不读源码、只等指示; (4) 用户不满：'try harder'、'stop giving up'、'换个方法'、'为什么还不行'、'你再试试'、'你怎么又失败了'。适用于所有任务类型。首次失败或已知修复正在执行时不触发。",
+              "input": {
+                "hint": "optional context"
+              },
+              "_meta": {
+                "kiro": {
+                  "type": "skill",
+                  "resource": {
+                    "resourceType": "skill",
+                    "source": {
+                      "origin": "user"
+                    }
+                  },
+                  "originalName": "pua"
+                }
+              }
+            }
+          ]
+        }
+      }
+    },
+    "session_info_update": {
+      "count": 8,
+      "firstFrame": {
+        "sessionId": "sess_e088a2eb-877d-41db-a5fa-e1f3dd87e3dd",
+        "update": {
+          "sessionUpdate": "session_info_update",
+          "_meta": {
+            "kiro": {
+              "contextUsage": {
+                "usagePercentage": 10.9
+              },
+              "breakdown": {
+                "contextFiles": {
+                  "tokens": 120,
+                  "percent": 0,
+                  "items": [
+                    {
+                      "name": "/c%3A/Users/tuifei/.kiro/steering/rtk.md",
+                      "uri": "file:///c%3A/Users/tuifei/.kiro/steering/rtk.md",
+                      "tokens": 120,
+                      "matched": true,
+                      "percent": 0,
+                      "progressivelyLoaded": false
+                    },
+                    {
+                      "name": "/C:/Users/tuifei/.kiro/skills/pua/SKILL.md",
+                      "uri": "file:///C:/Users/tuifei/.kiro/skills/pua/SKILL.md",
+                      "tokens": 0,
+                      "matched": true,
+                      "percent": 0,
+                      "progressivelyLoaded": true
+                    }
+                  ]
+                },
+                "tools": {
+                  "tokens": 28064,
+                  "percent": 9.4,
+                  "mcp": {
+                    "tokens": 19590,
+                    "percent": 6.5
+                  },
+                  "builtin": {
+                    "tokens": 8474,
+                    "percent": 2.8
+                  }
+                },
+                "kiroResponses": {
+                  "tokens": 0,
+                  "percent": 0
+                },
+                "yourPrompts": {
+                  "tokens": 4383,
+                  "percent": 1.5
+                },
+                "sessionFiles": {
+                  "tokens": 0,
+                  "percent": 0,
+                  "items": []
+                }
+              },
+              "kind": "context_usage",
+              "usagePercentage": 10.9
+            }
+          }
+        }
+      }
+    },
+    "tool_call_update": {
+      "count": 1,
+      "firstFrame": {
+        "sessionId": "sess_e088a2eb-877d-41db-a5fa-e1f3dd87e3dd",
+        "update": {
+          "sessionUpdate": "tool_call_update",
+          "toolCallId": "1cd2b585-fa5b-4cc0-a79a-306e5851337e",
+          "status": "completed",
+          "rawOutput": {
+            "kind": "notEnabled",
+            "retracted": false
+          }
+        }
+      }
+    },
+    "agent_message_chunk": {
+      "count": 126,
+      "firstFrame": {
+        "sessionId": "sess_e088a2eb-877d-41db-a5fa-e1f3dd87e3dd",
+        "update": {
+          "sessionUpdate": "agent_message_chunk",
+          "content": {
+            "type": "text",
+            "text": "上"
+          },
+          "_meta": {
+            "kiro": {
+              "replayId": "07f234bf-5d47-4e87-9f56-24d846c76f7e-say"
+            }
+          }
+        }
+      }
+    }
+  },
+  "governanceFirstFrame": {
+    "sessionId": "",
+    "isEnterprise": false,
+    "features": {
+      "mcpEnabled": true,
+      "webToolsEnabled": true,
+      "usageAnalytics": false,
+      "contentCollection": true,
+      "promptLogging": false,
+      "codeReferenceTracker": false,
+      "autonomousAgents": true
+    }
+  },
+  "elicitation": {
+    "performed": true,
+    "reason": "被动阶段 thought=false content-tool_call=false，触发主动 elicitation",
+    "sessionId": "sess_e088a2eb-877d-41db-a5fa-e1f3dd87e3dd",
+    "turnEnded": true,
+    "error": null
+  }
+}
